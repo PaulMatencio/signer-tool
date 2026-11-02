@@ -24,6 +24,13 @@ export interface PointJson {
   y: string;
 }
 
+/** Identity point (0, 1) on Jubjub, used for unused multisig approval slots. */
+export const EMPTY_PUBKEY: Point = { x: 0n, y: 1n } as unknown as Point;
+export const EMPTY_SIGNATURE = {
+  announcement: EMPTY_PUBKEY,
+  response: 0n
+};
+
 // ---------------------------------------------------------------------------
 // Byte / point helpers. The ONLY place that assumes a JubjubPoint is {x, y}.
 // selfTest() verifies that assumption before any key is created or used.
@@ -117,10 +124,16 @@ export function selfTest(): void {
         'Adjust pointToJson/pointFromJson in lib.ts before using this tool.'
     );
   }
-  const id = T.derivePublicKey(JUBJUB_SCALAR_ORDER) as unknown as { x: bigint; y: bigint };
-  if (!(id.x === 0n && id.y === 1n)) {
+  const id = T.derivePublicKey(0n) as unknown as { x: bigint; y: bigint };
+  const orderHolds = T.schnorrEquationHolds(
+    T.derivePublicKey(JUBJUB_SCALAR_ORDER - 1n),
+    0n,
+    T.derivePublicKey(1n),
+    1n
+  );
+  if (!(id.x === 0n && id.y === 1n && orderHolds)) {
     throw new Error(
-      'SELFTEST: r*G is not the identity (0,1). Either the subgroup-order constant or the ' +
+      'SELFTEST: (r-1)*G + G is not the identity (0,1). Either the subgroup-order constant or the ' +
         'point representation differs from what this tool assumes. Do NOT sign.'
     );
   }

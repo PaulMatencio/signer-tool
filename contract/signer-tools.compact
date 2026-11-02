@@ -13,7 +13,7 @@
 // the matching circuit here and recompile, or signatures will stop verifying.
 //
 // Compile without proving keys (pure circuits need none):
-//   compact compile --skip-zk compact/SignerTools.compact managed/signer-tools
+//   compact compile --skip-zk contract/signer-tools.compact managed/signer-tools
 pragma language_version >= 0.23;
 
 import CompactStandardLibrary;
