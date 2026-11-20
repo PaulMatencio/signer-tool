@@ -2,6 +2,9 @@
 # output can therefore never be committed by accident.
 /*
 !/.gitignore
+!/.dockerignore
+!/Dockerfile
+!/INSTALLATION_GUIDE.md
 !/README.md
 !/package.json
 !/package-lock.json

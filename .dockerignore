@@ -1,0 +1,9 @@
+# Whitelist build context so keyfiles, approvals, requests, and desktop artifacts
+# can never be copied into the Docker image.
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!src/
+!managed/
+
